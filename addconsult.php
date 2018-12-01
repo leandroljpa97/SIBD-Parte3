@@ -27,11 +27,11 @@
   $o=$_REQUEST['o'];
   $a=$_REQUEST['a'];
   $p=$_REQUEST['p'];
-  $code= $_REQUEST['code'];
+  $diagnosis= $_REQUEST['diagnosis'];
 
-  $sqls = $connection->prepare("INSERT into consult values(:name,:VAT_owner,:date_timestamp,:s,:o,:a,:p,:VAT_client,:VAT_vet,:weight);
-                                INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);");
+  $sqls = $connection->prepare("INSERT into consult values(:name,:VAT_owner,:date_timestamp,:s,:o,:a,:p,:VAT_client,:VAT_vet,:weight);");
 
+  // INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);
   $sqls->execute([':name' => $name,
                   ':VAT_owner'=>$VAT_owner,
                   ':date_timestamp'=>$date_timestamp,
@@ -41,11 +41,11 @@
                   ':p'=>$p,
                   ':VAT_client'=>$VAT_client,
                   ':VAT_vet'=>$VAT_vet,
-                  ':weight'=>$weight,
-                  ':code'=>$code]);
+                  ':weight'=>$weight]);
 
   $result_f=$sqls->fetchAll();
 
+// isto está mal, mudar!!!!
   if ($result_f == 0) {
     $info = $sqls->errorInfo();
     echo("<p>Error: The insertion was no success</p>");
@@ -57,9 +57,21 @@
     <h3>Come back to homepage</h3>
     <p><input type='submit' value='Homepage'/></p>
     </form>");
+    if(!empty($diagnosis)){
+      $sqls = $connection->prepare("INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);"); //ver se é possível preparar por partes, acho que não
+        foreach ($diagnosis as $code) {
+          $sqls->execute([':name' => $name,
+                          ':VAT_owner'=>$VAT_owner,
+                          ':date_timestamp'=>$date_timestamp,
+                          ':code'=>$code]);
+        } // fazer o check
+    }
+
+
+
+
   }
 
-// como devemos
 $connection = null;
   ?>
 </body>

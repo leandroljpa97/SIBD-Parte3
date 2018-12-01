@@ -74,7 +74,7 @@
       {
         $code = $row['code'];
         $name = $row['name'];
-        echo("<input type='checkbox' name='diagnosis[]' value='$code'/>$name<br/>");
+        echo("<input type='radio' name='diagnosis[]' value='$code'/>$name<br/>");
       }
 
       $connection = null;
