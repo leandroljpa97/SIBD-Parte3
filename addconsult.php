@@ -56,7 +56,7 @@
     echo(" <form action='check.php' method='post'>
     <h3>Come back to homepage</h3>
     <p><input type='submit' value='Homepage'/></p>
-    </form>");
+    </form>"); // desnecessário
     if(!empty($diagnosis)){
       $sqls = $connection->prepare("INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);"); //ver se é possível preparar por partes, acho que não
         foreach ($diagnosis as $code) {
@@ -65,6 +65,7 @@
                           ':date_timestamp'=>$date_timestamp,
                           ':code'=>$code]);
         } // fazer o check
+        header("Location: consults.php");
     }
 
 
