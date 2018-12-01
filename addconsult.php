@@ -32,17 +32,17 @@
   $sqls = $connection->prepare("INSERT into consult values(:name,:VAT_owner,:date_timestamp,:s,:o,:a,:p,:VAT_client,:VAT_vet,:weight);
                                 INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);");
 
-  $sqls->execute(['name' => $name,
-                  'VAT_owner'=>$VAT_owner,
-                  'date_timestamp'=>$date_timestamp,
-                  's'=>$s,
-                  'o'=>$o,
-                  'a'=>$a,
-                  'p'=>$p,
-                  'VAT_client'=>$VAT_client,
-                  'VAT_vet'=>$VAT_vet,
-                  'weight'=>$weight,
-                  'code'=>$code,]);
+  $sqls->execute([':name' => $name,
+                  ':VAT_owner'=>$VAT_owner,
+                  ':date_timestamp'=>$date_timestamp,
+                  ':s'=>$s,
+                  ':o'=>$o,
+                  ':a'=>$a,
+                  ':p'=>$p,
+                  ':VAT_client'=>$VAT_client,
+                  ':VAT_vet'=>$VAT_vet,
+                  ':weight'=>$weight,
+                  ':code'=>$code]);
 
   $result_f=$sqls->fetchAll();
 

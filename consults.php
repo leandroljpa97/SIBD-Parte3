@@ -48,13 +48,14 @@
   echo("</table>\n");
   $connection = null;
 
-  // add consult
-  echo("  <form action='addconsult.php' method='post'>
+  ?>
+
+  <form action='addconsult.php' method='post'>
       <h3>Add another consult</h3>
-      <p><input type='hidden' name='name' value='$name'/></p>
-      <p><input type='hidden' name='VAT_owner' value='$VAT_owner'/></p>
-      <p><input type='hidden' name='date_timestamp' value='$date_timestamp'/></p>
-      <p><input type='hidden' name='VAT_client' value='$VAT_client'/></p>
+      <p><input type='hidden' name='name' value='<?=$name?>'/></p>
+      <p><input type='hidden' name='VAT_owner' value='<?=$VAT_owner?>'/></p>
+      <p><input type='hidden' name='date_timestamp' value='<?=$date_timestamp?>'/></p>
+      <p><input type='hidden' name='VAT_client' value='<?=$VAT_client?>'/></p>
       <p>VAT veterinary doctor: <input type='text' name='VAT_vet' required/></p>
       <p>Weight: <input type='number' name='weight' required /> kg</p>
       <p>S: <input type='text' name='s'/></p>
@@ -63,7 +64,6 @@
       <p>P: <input type='text' name='p'/></p>
       <p>Diagnosis code: <input type='text' name='code'/></p> <!-- confirmar se é este tipo de input. será dos de selecionar? e devia dar para vários-->
       <p><input type='submit' value='Submit'/></p>
-    </form>");
-  ?>
+  </form>
 </body>
 </html>
