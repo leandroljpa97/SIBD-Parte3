@@ -1,6 +1,7 @@
 <html>
 <body>
   <?php
+  session_start();
   $host = "db.tecnico.ulisboa.pt";
   $user = "ist425412";
   $pass = "pxfi3850";
@@ -16,8 +17,8 @@
     echo("</p>");
     exit();
   }
-  $VAT_client = $_REQUEST['VAT_client'];
-    
+  $SESSION['VAT_client'] = $_REQUEST['VAT_client'];
+
   $sqls = $connection->prepare("SELECT VAT FROM client WHERE VAT= :VAT_client");
   $sqls->execute(['VAT_client'=> $VAT_client,]);
   $result=$sqls->fetchAll();
