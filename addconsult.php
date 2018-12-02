@@ -66,7 +66,7 @@
                           ':code'=>$code]);
         } // fazer o check
     }
-    header("Location: consults.php"); // n está a dar
+    header("Location: consults.php");
   }
 
 $connection = null;

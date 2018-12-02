@@ -45,7 +45,7 @@
 
   else
   {
-    header("Location: animals.php");
+    header("Location: animals.php"); // n funciona, o gajo não faz o reload atualizado
     echo("<p>Animal inserted successfully</p>");
     echo(" <form action='check.php' method='post'>
     <h3>Come back to homepage</h3>
