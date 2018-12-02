@@ -23,7 +23,6 @@
   $gender= $_REQUEST['gender'];
   $birth_year = $_REQUEST['birth_year'];
   $age=$_REQUEST['age'];
-  $VAT_owner=$_REQUEST['VAT_owner'];
 
 
   $sqls = $connection->prepare("INSERT into animal values(:animal_name,:VAT_owner,:species_name,:colour,:gender,:birth_year,:age)");
@@ -41,16 +40,13 @@
   if ($result_f == 0) {
     $info = $sqls->errorInfo();
     echo("<p>Error: The insertion was no success</p>");
+    exit();
   }
 
   else
   {
     header("Location: animals.php"); // n funciona, o gajo não faz o reload atualizado
-    echo("<p>Animal inserted successfully</p>");
-    echo(" <form action='check.php' method='post'>
-    <h3>Come back to homepage</h3>
-    <p><input type='submit' value='Homepage'/></p>
-    </form>");
+  
   }
 
   ?>
