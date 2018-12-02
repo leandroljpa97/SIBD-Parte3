@@ -5,7 +5,7 @@ create trigger update_age before insert on consult
 for each row
 begin
 
-	update animal set age = timestampdiff(YEAR, bith_year,new.date_timestamp)
+	update animal set age = timestampdiff(YEAR, birth_year,new.date_timestamp)
 		where animal.name=new.name and animal.VAT=new.VAT_owner ;
 
 end$$
@@ -18,7 +18,7 @@ create trigger check_vet_insert before insert on veterinary
 for each row
 begin
 
-	IF (new.VAT in (select VAT from assistant)) THEN
+	if (new.VAT in (select VAT from assistant)) then
 	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already an assistant';
 	END IF;
 
