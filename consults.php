@@ -19,14 +19,16 @@
     exit();
   }
 
-  $_SESSION['name'] = $_REQUEST['name'];
-  $_SESSION['VAT_owner'] = $_REQUEST['VAT_owner'];
+  if(isset($_REQUEST['name'])){
+    $_SESSION['name'] = $_REQUEST['name'];
+    $_SESSION['VAT_owner'] = $_REQUEST['VAT_owner'];
+  }
   $VAT_client = $_SESSION['VAT_client'];
-  $date_timestamp = date('Y-m-d H:i:s', time());
+  $_SESSION['date_timestamp'] = date('Y-m-d H:i:s', time());
   $name = $_SESSION['name'];
   $VAT_owner = $_SESSION['VAT_owner'];
 
-  $sql = "SELECT * FROM consult WHERE name = '$name' AND VAT_owner = '$VAT_owner'";
+  $sql = "SELECT date_timestamp FROM consult WHERE name = '$name' AND VAT_owner = '$VAT_owner'";
   $result = $connection->query($sql);
   if ($result == FALSE)
   {
@@ -53,10 +55,6 @@
 
   <form action='addconsult.php' method='post'>
     <h3>Add another consult</h3>
-    <p><input type='hidden' name='name' value='<?=$name?>'/></p>
-    <p><input type='hidden' name='VAT_owner' value='<?=$VAT_owner?>'/></p>
-    <p><input type='hidden' name='date_timestamp' value='<?=$date_timestamp?>'/></p>
-    <p><input type='hidden' name='VAT_client' value='<?=$VAT_client?>'/></p>
     <p>VAT veterinary doctor: <input type='text' name='VAT_vet' required/></p>
     <p>Weight: <input type='number' name='weight' required /> kg</p>
     <p>S: <input type='text' name='s'/></p>

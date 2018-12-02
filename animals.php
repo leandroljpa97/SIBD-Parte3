@@ -18,9 +18,12 @@
     exit();
   }
 
-  $_SESSION['VAT_client'] = $_REQUEST['VAT_client'];
-  $_SESSION['animal_name'] = $_REQUEST['animal_name'];
-
+  if(isset($_REQUEST['VAT_client'])){
+    $_SESSION['VAT_client'] = $_REQUEST['VAT_client'];
+    $_SESSION['animal_name'] = $_REQUEST['animal_name'];
+    $owner_name = $_REQUEST['owner_name'];
+  }
+  
   $sqls = $connection->prepare("SELECT VAT FROM client WHERE VAT= :VAT_client");
   $sqls->execute([':VAT_client'=> $_SESSION['VAT_client']]);
   $result=$sqls->fetchAll();
@@ -41,7 +44,7 @@
     WHERE animal.name=:animal_name and person.name like CONCAT('%',:owner_name,'%')");
 
   $sqls->execute([':animal_name' => $_SESSION['animal_name'],
-  ':owner_name' => $_REQUEST['owner_name']]);
+  ':owner_name' => $owner_name]);
 
   $result_f=$sqls->fetchAll();
 

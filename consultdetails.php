@@ -17,9 +17,9 @@
     echo("</p>");
     exit();
   }
-  $name = $_REQUEST['name'];
-  $VAT_owner = $_REQUEST['VAT_owner'];
-  $date_timestamp = $_REQUEST['date_timestamp'];
+  $name = $_SESSION['name'];
+  $VAT_owner = $_SESSION['VAT_owner'];
+  $date_timestamp = $_SESSION['date_timestamp'];
 
   $sql = "SELECT * FROM animal WHERE name = '$name' AND VAT = '$VAT_owner'";
   $result = $connection->query($sql);
