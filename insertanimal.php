@@ -1,9 +1,10 @@
 <html>
 <body>
   <?php
+  session_start();
   $host = "db.tecnico.ulisboa.pt";
-  $user = "ist425412";
-  $pass = "pxfi3850";
+  $user = "ist425496";
+  $pass = "abjq7123";
   $dsn = "mysql:host=$host;dbname=$user";
   try
   {
@@ -27,13 +28,13 @@
 
   $sqls = $connection->prepare("INSERT into animal values(:animal_name,:VAT_owner,:species_name,:colour,:gender,:birth_year,:age)");
 
-  $sqls->execute(['animal_name' => $animal_name,
-  'species_name'=>$species_name,
-  'VAT_owner'=>$VAT_owner,
-  'colour'=>$colour,
-  'gender'=>$gender,
-  'birth_year'=>$birth_year,
-  'age'=>$age,]);
+  $sqls->execute([':animal_name' => $_SESSION['animal_name'],
+  ':species_name'=>$species_name,
+  ':VAT_owner'=>$_SESSION['VAT_client'],
+  ':colour'=>$colour,
+  ':gender'=>$gender,
+  ':birth_year'=>$birth_year,
+  ':age'=>$age]);
 
   $result_f=$sqls->fetchAll();
 

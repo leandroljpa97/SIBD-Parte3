@@ -2,6 +2,7 @@
 <body>
   <h3>Consults</h3>
   <?php
+  session_start();
   $host = "db.tecnico.ulisboa.pt";
   $user = "ist425496";
   $pass = "abjq7123";
@@ -18,10 +19,12 @@
     exit();
   }
 
-  $name = 'Puma';
-  $VAT_owner = '00000000';
-  $VAT_client = '00000000'; // de onde vem isto?
-  $date_timestamp = date('Y-m-d H:i:s', time()); // e isto? é a atual??
+  $_SESSION['name'] = $_REQUEST['name'];
+  $_SESSION['VAT_owner'] = $_REQUEST['VAT_owner'];
+  $VAT_client = $_SESSION['VAT_client'];
+  $date_timestamp = date('Y-m-d H:i:s', time());
+  $name = $_SESSION['name'];
+  $VAT_owner = $_SESSION['VAT_owner'];
 
   $sql = "SELECT * FROM consult WHERE name = '$name' AND VAT_owner = '$VAT_owner'";
   $result = $connection->query($sql);
@@ -37,9 +40,9 @@
     echo("<tr>\n");
     echo("<td>{$row['date_timestamp']}</td>\n");
     echo("<td><a href=\"consultdetails.php?name=");
-    echo('Puma');
+    echo($name);
     echo("&VAT_owner=");
-    echo('00000000');
+    echo($VAT_owner);
     echo("&date_timestamp=");
     echo($row['date_timestamp']);
     echo("\">View consult</a></td>\n");

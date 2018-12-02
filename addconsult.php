@@ -1,6 +1,7 @@
 <html>
 <body>
   <?php
+  session_start();
   $host = "db.tecnico.ulisboa.pt";
   $user = "ist425496";
   $pass = "abjq7123";
@@ -17,11 +18,11 @@
     exit();
   }
 
-  $name = $_REQUEST['name'];
-  $date_timestamp= $_REQUEST['date_timestamp'];
+  $name = $_SESSION['name'];
+  $date_timestamp= $_SESSION['date_timestamp'];
   $VAT_vet = $_REQUEST['VAT_vet'];
-  $VAT_client=$_REQUEST['VAT_client'];
-  $VAT_owner=$_REQUEST['VAT_owner'];
+  $VAT_client=$_SESSION['VAT_client'];
+  $VAT_owner=$_SESSION['VAT_owner'];
   $weight= $_REQUEST['weight'];
   $s = $_REQUEST['s'];
   $o=$_REQUEST['o'];
@@ -31,7 +32,6 @@
 
   $sqls = $connection->prepare("INSERT into consult values(:name,:VAT_owner,:date_timestamp,:s,:o,:a,:p,:VAT_client,:VAT_vet,:weight);");
 
-  // INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);
   $sqls->execute([':name' => $name,
                   ':VAT_owner'=>$VAT_owner,
                   ':date_timestamp'=>$date_timestamp,
@@ -65,12 +65,8 @@
                           ':date_timestamp'=>$date_timestamp,
                           ':code'=>$code]);
         } // fazer o check
-        header("Location: consults.php");
     }
-
-
-
-
+    header("Location: consults.php?name=$name&VAT_owner=$VAT_owner"); // n está a dar
   }
 
 $connection = null;
