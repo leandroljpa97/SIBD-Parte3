@@ -49,6 +49,7 @@
   if ($result_f == 0) {
     $info = $sqls->errorInfo();
     echo("<p>Error: The insertion was no success</p>");
+    exit();
   }
   else
   {
