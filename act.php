@@ -17,9 +17,9 @@ $indicators[1][1]=(integer) $_REQUEST['redbloodcells'];
 //$lympho = (integer) $_REQUEST['lymphocytes'];
 //$mono = (integer) $_REQUEST['monocytes'];
 
-//if (($white>0 || $white=null) && ($neutro>0 || $neutro=null) 
+//if (($white>0 || $white=null) && ($neutro>0 || $neutro=null)
 //	&& ($lympho>0 || $lympho=null) && ($mono>0 || $mono=null))
-if (($indicators[0][1]>0 || $indicators[0][1]==null) && 
+if (($indicators[0][1]>0 || $indicators[0][1]==null) &&
     ($indicators[1][1]>0 || $indicators[1][1]==null)){
 	$host = "db.ist.utl.pt";
 	$user = "ist425496";
@@ -38,7 +38,7 @@ if (($indicators[0][1]>0 || $indicators[0][1]==null) &&
 		$sql = "insert into participation values('$name', '$vato', '$date', '$vata');";
 		$connection->exec($sql);
 		//echo ("<p>insertion = $sql</p>");
-		$sql = "SELECT * FROM participation WHERE 
+		$sql = "SELECT * FROM participation WHERE
 		name='$name' AND VAT_owner='$vato' AND date_timestamp='$date' AND VAT_assistant='$vata';";
 		//echo ("<p>query = $sql</p>");
 		$result = $connection->query($sql);
@@ -66,19 +66,19 @@ if (($indicators[0][1]>0 || $indicators[0][1]==null) &&
 		if($ind[1]!=0){
 			$number=$number+1;
 			echo("<p>");
-			
+
 			$sql = "insert into proced values('$name', '$vato', '$date', $number, 'testing $ind[0]');";
 			echo("SQL = $sql<br>");
 			$connection->exec($sql);
-			
+
 			$sql = "insert into test_procedure values('$name', '$vato', '$date', $number, 'blood');";
 			echo("SQL = $sql<br>");
 			$connection->exec($sql);
-			
+
 			$sql = "insert into produced_indicator values('$name', '$vato', '$date', $number , '$ind[0]', $ind[1]);";
 			echo("SQL = $sql<br>");
 			$connection->exec($sql);
-			echo("</p>");			
+			echo("</p>");
 		}
     }
 	$sql="SELECT * FROM proced WHERE name='$name' AND VAT_owner='$vato' AND date_timestamp='$date';";
@@ -87,21 +87,21 @@ if (($indicators[0][1]>0 || $indicators[0][1]==null) &&
 	$rows[0] = $result->fetchAll();
 	$num[0] = $result->rowCount();
 	//echo("Something is wrong... num=$num[0] and number=$number<br>");
-	
+
 	$sql="SELECT * FROM test_procedure WHERE name='$name' AND VAT_owner='$vato' AND date_timestamp='$date';";
 	echo("SQL = $sql<br>");
 	$result = $connection->query($sql);
 	$rows[1] = $result->fetchAll();
 	$num[1] = $result->rowCount();
 	//echo("Something is wrong... num=$num[1] and number=$number<br>");
-	
+
 	$sql="SELECT * FROM produced_indicator WHERE name='$name' AND VAT_owner='$vato' AND date_timestamp='$date';";
 	echo("SQL = $sql<br>");
 	$result = $connection->query($sql);
 	$rows[2] = $result->fetchAll();
 	$num[2] = $result->rowCount();
 	//echo("Something is wrong... num=$num[2] and number=$number<br>");
-	
+
 	$i=0;
 	while($i!=3){
 		if ($num[$i]==$number && $num[$i]>0){
@@ -113,7 +113,7 @@ if (($indicators[0][1]>0 || $indicators[0][1]==null) &&
 				if($i==1){
 					//echo("<p>Inserted: $rows[$i][\"name\"] $rows[$i][\"VAT_owner\"] $rows[$i][\"date_timestamp\"] $rows[$i][\"num\"] $rows[$i][\"type\"] </p>");
 					echo("<p>Inserted: $rows[$i][0] $rows[$i][1] $rows[$i][2] $rows[$i][3] $rows[$i][4] </p>");
-				}					
+				}
 				if($i==0){
 					//echo("<p>Inserted: $rows[$i][\"name\"] $rows[$i][\"VAT_owner\"] $rows[$i][\"date_timestamp\"] $rows[$i][\"num\"] $rows[$i][\"description\"] </p>");
 					echo("<p>Inserted: $rows[$i][0] $rows[$i][1] $rows[$i][2] $rows[$i][3] $rows[$i][4] </p>");
@@ -130,7 +130,7 @@ if (($indicators[0][1]>0 || $indicators[0][1]==null) &&
 					if($i==1){
 						//echo("<p>Inserted: $r[\"name\"] $r[\"VAT_owner\"] $r[\"date_timestamp\"] $r[\"num\"] $r[\"type\"] </p>");
 						echo("<p>Inserted: $r[0] $r[1] $r[2] $r[3] $r[4] </p>");
-					}						
+					}
 					if($i==0){
 						//echo("<p>Inserted: $r[\"name\"] $r[\"VAT_owner\"] $r[\"date_timestamp\"] $r[\"num\"] $r[\"description\"] </p>");
 						echo("<p>Inserted: $r[0] $r[1] $r[2] $r[3] $r[4] </p>");
@@ -148,8 +148,8 @@ if (($indicators[0][1]>0 || $indicators[0][1]==null) &&
 		}
 		$i=$i+1;
 	}
-	$connection->rollback();
-	//$connection->commit();
+//	$connection->rollback();
+	$connection->commit();
 	$connection = null;
 } else {
 	echo("<p>Please specify a positive amounts...</p>");
@@ -158,4 +158,3 @@ if (($indicators[0][1]>0 || $indicators[0][1]==null) &&
 ?>
 </body>
 </html>
-

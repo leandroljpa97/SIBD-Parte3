@@ -28,14 +28,20 @@
   $name = $_SESSION['name'];
   $VAT_owner = $_SESSION['VAT_owner'];
 
-  $sql = "SELECT date_timestamp FROM consult WHERE name = '$name' AND VAT_owner = '$VAT_owner'";
-  $result = $connection->query($sql);
+  $sql = $connection->prepare("SELECT date_timestamp FROM consult
+    WHERE name = :name AND VAT_owner = :VAT_owner;");
+  $sql->execute([':name' => $name,
+                  ':VAT_owner'=>$VAT_owner]);
+
+  $result=$sql->fetchAll();
+
   if ($result == FALSE)
   {
     $info = $connection->errorInfo();
     echo("<p>Error: {$info[2]}</p>");
     exit();
   }
+
   echo("<table border=\"0\" cellspacing=\"5\">\n");
   foreach($result as $row)
   {
@@ -52,15 +58,39 @@
   }
   echo("</table>\n");
   ?>
-
+  <h3>Add another consult</h3>
+  <p>Name: <?=$name?></p>
+  <p>Owner's VAT: <?=$VAT_owner?></p>
+  <p>Date and time: <?=$_SESSION['date_timestamp']?></p>
   <form action='addconsult.php' method='post'>
-    <h3>Add another consult</h3>
-    <p>VAT veterinary doctor: <input type='text' name='VAT_vet' required/></p>
-    <p>Weight: <input type='number' name='weight' required /> kg</p>
-    <p>S: <input type='text' name='s'/></p>
-    <p>O: <input type='text' name='o'/></p>
-    <p>A: <input type='text' name='a'/></p>
-    <p>P: <input type='text' name='p'/></p>
+    <p>VAT veterinary doctor:
+      <select name="VAT_vet">
+        <?php
+        $sql = "SELECT VAT FROM veterinary ORDER BY VAT";
+        $result = $connection->query($sql);
+        if ($result == FALSE)
+        {
+          $info = $connection->errorInfo();
+          echo("<p>Error: {$info[2]}</p>");
+          exit();
+        }
+        foreach($result as $row)
+        {
+          $VAT_vet = $row['VAT'];
+          echo("<option value=\"$VAT_vet\">$VAT_vet</option>");
+        }
+        ?>
+      </select>
+    </p>
+    <p>Weight: <input type='number' min="1" name='weight' style="width:60px;" required /> kg</p>
+    <p>Subjective:</p>
+    <p><textarea type='text' style="width:250px;height:100px;" name='s'></textarea></p>
+    <p>Objective:</p>
+    <p><textarea type='text' style="width:250px;height:100px;" name='o'></textarea></p>
+    <p>Assessment:</p>
+    <p><textarea type='text' style="width:250px;height:100px;" name='a'></textarea></p>
+    <p>Plan:</p>
+    <p><textarea type='text' style="width:250px;height:100px;" name='p'></textarea></p>
     <p>Diagnosis:<br/>
       <?php
       $sql = "SELECT * FROM diagnosis_code";
