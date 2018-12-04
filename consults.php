@@ -112,5 +112,8 @@
       ?></p>
       <p><input type='submit' value='Submit'/></p>
     </form>
+    <form action='check.php' method='post'>
+    <h3>Go back to homepage</h3>
+    <p><input type='submit' value='Homepage'/></p>
   </body>
   </html>

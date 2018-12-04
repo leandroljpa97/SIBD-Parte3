@@ -2,9 +2,9 @@
 <body>
 	<?php
 	//VARIAVEIS DE ESTADO
-	$vatowner= (string) "00000005";
-	$name= (string) "Goofy";
-	$date= "2018-1-10 12:30:00.75";
+	$vatowner= $_REQUEST['VAT_owner'];
+	$name= $_REQUEST['name'];
+	$date= $_REQUEST['date_timestamp'];
 
 	$host = "db.tecnico.ulisboa.pt";
 	$user = "ist425496";
@@ -32,7 +32,7 @@
 	}
 	$assistants=$result->fetchAll();
 
-	$sql="SELECT name FROM indicator";
+	$sql="SELECT name, units FROM indicator";
 	$result=$connection->query($sql);
 	if ($result == FALSE)
 	{
@@ -47,7 +47,7 @@
 	echo ("<input type=\"hidden\" id=\"vatowner\" name=\"vatowner\" value=\"$vatowner\">");
 	echo ("<input type=\"hidden\" id=\"name\" name=\"name\" value=\"$name\">");
 	echo ("<input type=\"hidden\" id=\"date\" name=\"date\" value=\"$date\">");
-	echo ("<fieldset><legend> Results of the Blood Tests </legend>");
+	echo ("<fieldset style='max-width:400px'><legend> Results of the Blood Tests </legend>");
 	echo ("<label for=\"vatassistant\"> VAT of the assistant:</label>");
 	echo ("<select id=\"vatassistant\" name=\"vatassistant\">");
 	echo("<option value=\"escolha\">Choose</option>");
@@ -58,7 +58,8 @@
 	echo ("</select><br><br>");
 	foreach($indicators as $row){
 		$indicator = $row["name"];
-		echo("<p>$indicator: <input type='number' min='0' name='indicator[$indicator]'/></p>");
+		$units = $row["units"];
+		echo("<p>$indicator: <input type='number' min='0' style='width:60px;' name='indicator[$indicator]'/> $units</p>");
 	}
 	echo ("<input type=\"submit\" value=\"Submit\">");
 	echo ("</fieldset>");
@@ -66,5 +67,8 @@
 
 	$connection = null;
 	?>
+	<form action='check.php' method='post'>
+	<h3>Go back to homepage</h3>
+	<p><input type='submit' value='Homepage'/></p>
 </body>
 </html>

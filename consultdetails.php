@@ -119,5 +119,15 @@
 
   $connection = null;
   ?>
+  <form action='test.php' method='post'>
+  <h3>Insert blood test</h3>
+  <input type='hidden' name='name' value='<?=$name?>'/>
+  <input type='hidden' name='VAT_owner' value='<?=$VAT_owner?>'/>
+  <input type='hidden' name='date_timestamp' value='<?=$date_timestamp?>'/>
+  <p><input type='submit' value='Add'/></p>
+  </form>
+  <form action='check.php' method='post'>
+  <h3>Go back to homepage</h3>
+  <p><input type='submit' value='Homepage'/></p>
 </body>
 </html>
