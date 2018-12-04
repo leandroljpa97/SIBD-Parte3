@@ -50,7 +50,7 @@
 	echo ("<fieldset style='max-width:400px'><legend> Results of the Blood Tests </legend>");
 	echo ("<label for=\"vatassistant\"> VAT of the assistant:</label>");
 	echo ("<select id=\"vatassistant\" name=\"vatassistant\">");
-	echo("<option value=\"escolha\">Choose</option>");
+	echo("<option value=\"choose\">Choose</option>");
 	foreach($assistants as $row){
 		$vat=$row["VAT"];
 		echo("<option value=\"$vat\">$vat</option>");
