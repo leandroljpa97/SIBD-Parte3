@@ -2,7 +2,6 @@
 <body>
   <h3>Consults</h3>
   <?php
-  session_start();
   $host = "db.tecnico.ulisboa.pt";
   $user = "ist425496";
   $pass = "abjq7123";
@@ -19,14 +18,10 @@
     exit();
   }
 
-  if(isset($_REQUEST['name'])){
-    $_SESSION['name'] = $_REQUEST['name'];
-    $_SESSION['VAT_owner'] = $_REQUEST['VAT_owner'];
-  }
-  $VAT_client = $_SESSION['VAT_client'];
-  $_SESSION['date_timestamp'] = date('Y-m-d H:i:s', time());
-  $name = $_SESSION['name'];
-  $VAT_owner = $_SESSION['VAT_owner'];
+  $name = $_REQUEST['name'];
+  $VAT_owner = $_REQUEST['VAT_owner'];
+  $VAT_client = $_REQUEST['VAT_client'];
+  $date_timestamp = date('Y-m-d H:i:s', time());
 
   $sql = $connection->prepare("SELECT date_timestamp FROM consult
     WHERE name = :name AND VAT_owner = :VAT_owner;");
@@ -55,7 +50,7 @@
   <h3>Add another consult</h3>
   <p>Name: <?=$name?></p>
   <p>Owner's VAT: <?=$VAT_owner?></p>
-  <p>Date and time: <?=$_SESSION['date_timestamp']?></p>
+  <p>Date and time: <?=$date_timestamp?></p>
   <form action='addconsult.php' method='post'>
     <p>VAT veterinary doctor:
       <select name="VAT_vet">
@@ -76,6 +71,10 @@
         ?>
       </select>
     </p>
+    <input type='hidden' name='name' value='<?=$name?>' />
+    <input type='hidden' name='date_timestamp' value='<?=$date_timestamp?>' />
+    <input type='hidden' name='VAT_owner' value='<?=$VAT_owner?>' />
+    <input type='hidden' name='VAT_client' value='<?=$VAT_client?>' />
     <p>Weight: <input type='number' min="1" name='weight' style="width:60px;" required /> kg</p>
     <p>Subjective:</p>
     <p><textarea type='text' style="width:250px;height:100px;" name='s'></textarea></p>

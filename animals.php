@@ -1,7 +1,6 @@
 <html>
 <body>
   <?php
-  session_start();
   $host = "db.tecnico.ulisboa.pt";
   $user = "ist425496";
   $pass = "abjq7123";
@@ -17,14 +16,13 @@
     echo("</p>");
     exit();
   }
-  if(isset($_REQUEST['VAT_client'])){
-    $_SESSION['VAT_client'] = $_REQUEST['VAT_client'];
-    $_SESSION['animal_name'] = $_REQUEST['animal_name'];
-    $_SESSION['owner_name'] = $_REQUEST['owner_name'];
-  }
+
+  $VAT_client = $_REQUEST['VAT_client'];
+  $name = $_REQUEST['animal_name'];
+  $owner_name = $_REQUEST['owner_name'];
 
   $sqls = $connection->prepare("SELECT VAT FROM client WHERE VAT= :VAT_client");
-  $sqls->execute([':VAT_client'=> $_SESSION['VAT_client']]);
+  $sqls->execute([':VAT_client'=> $VAT_client]);
   $result=$sqls->fetchAll();
   if ($result == 0) {
     $info = $sqls->errorInfo();
@@ -41,8 +39,8 @@
   {
     $sqlw = $connection->prepare("SELECT distinct animal.name as an_name, animal.VAT, person.name as name_owner,species_name, colour,gender,birth_year,age FROM animal inner join consult on animal.name=consult.name and animal.VAT=consult.VAT_owner inner join person on animal.VAT=person.VAT  WHERE VAT_client= :VAT_client and animal.name=:animal_name and person.name like CONCAT('%',:owner_name,'%') ");
 
-    $sqlw->execute([':animal_name' => $_SESSION['animal_name'],
-    ':owner_name' => $_SESSION['owner_name'],':VAT_client' => $_SESSION['VAT_client'] ]);
+    $sqlw->execute([':animal_name' => $name,
+    ':owner_name' => $owner_name,':VAT_client' => $VAT_client ]);
     $result_w=$sqlw->fetchAll();
     if ($result_w == 0) {
       $info = $sqlw->errorInfo();
@@ -92,8 +90,8 @@
         FROM animal inner join person on animal.VAT=person.VAT
         WHERE animal.name=:animal_name and person.name like CONCAT('%',:owner_name,'%') UNION SELECT distinct animal.name as an_name, animal.VAT, person.name as name_owner,species_name, colour,gender,birth_year,age FROM animal inner join consult on animal.name=consult.name and animal.VAT=consult.VAT_owner inner join person on animal.VAT=person.VAT  WHERE VAT_client= :VAT_client");
 
-        $sqlx->execute([':animal_name' => $_SESSION['animal_name'],
-          ':owner_name' => $_SESSION['owner_name'],':VAT_client' => $_SESSION['VAT_client'] ]);
+        $sqlx->execute([':animal_name' => $name,
+          ':owner_name' => $owner_name,':VAT_client' => $VAT_client ]);
           $result_w=$sqlx->fetchAll();
           if ($result_w == 0) {
           $info = $sqlx->errorInfo();

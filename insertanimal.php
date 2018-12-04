@@ -1,7 +1,6 @@
 <html>
 <body>
   <?php
-  session_start();
   $host = "db.tecnico.ulisboa.pt";
   $user = "ist425496";
   $pass = "abjq7123";
@@ -22,10 +21,12 @@
   $gender= $_REQUEST['gender'];
   $birth_year = $_REQUEST['birth_year'];
   $age=$_REQUEST['age'];
+  $name = $_REQUEST['animal_name'];
+  $VAT_client=$_REQUEST['VAT_client'];
   $sqls = $connection->prepare("INSERT into animal values(:animal_name,:VAT_owner,:species_name,:colour,:gender,:birth_year,:age)");
-  $sqls->execute([':animal_name' => $_SESSION['animal_name'],
+  $sqls->execute([':animal_name' => $name,
   ':species_name'=>$species_name,
-  ':VAT_owner'=>$_SESSION['VAT_client'],
+  ':VAT_owner'=>$VAT_client,
   ':colour'=>$colour,
   ':gender'=>$gender,
   ':birth_year'=>$birth_year,

@@ -1,7 +1,6 @@
 <html>
 <body>
   <?php
-  session_start();
   $host = "db.tecnico.ulisboa.pt";
   $user = "ist425496";
   $pass = "abjq7123";
@@ -18,11 +17,11 @@
     exit();
   }
 
-  $name = $_SESSION['name'];
-  $date_timestamp= $_SESSION['date_timestamp'];
+  $name = $_REQUEST['name'];
+  $date_timestamp= $_REQUEST['date_timestamp'];
   $VAT_vet = $_REQUEST['VAT_vet'];
-  $VAT_client=$_SESSION['VAT_client'];
-  $VAT_owner=$_SESSION['VAT_owner'];
+  $VAT_client=$_REQUEST['VAT_client'];
+  $VAT_owner=$_REQUEST['VAT_owner'];
   $weight= $_REQUEST['weight'];
   $s = $_REQUEST['s'];
   $o=$_REQUEST['o'];

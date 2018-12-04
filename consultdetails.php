@@ -2,7 +2,6 @@
 <body>
   <h3>Consult: <?=$_REQUEST['date_timestamp']?></h3>
   <?php
-  session_start();
   $host = "db.tecnico.ulisboa.pt";
   $user = "ist425496";
   $pass = "abjq7123";
@@ -18,8 +17,8 @@
     echo("</p>");
     exit();
   }
-  $name = $_SESSION['name'];
-  $VAT_owner = $_SESSION['VAT_owner'];
+  $name = $_REQUEST['name'];
+  $VAT_owner = $_REQUEST['VAT_owner'];
   $date_timestamp = $_REQUEST['date_timestamp'];
 
   $sql = $connection->prepare("SELECT * FROM animal WHERE name = :name
@@ -96,7 +95,7 @@
   if(!$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp])){
     $info = $connection->errorInfo();
     echo("<p>Error: {$info[2]}</p>");
-    exit();  
+    exit();
   }
 
   $result=$sql->fetchAll();
