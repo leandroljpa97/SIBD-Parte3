@@ -1,51 +1,70 @@
 <html>
 <body>
-<?php
+	<?php
 	//VARIAVEIS DE ESTADO
-	$VAT_owner= $_SESSION['VAT_owner'];
-	$name= $_SESSION['name'];
-	$date= "2018-1-10 12:30:00.75"; //TODO
-	$host="db.ist.utl.pt";	// MySQL is hosted in this machine
+	$vatowner= (string) "00000005";
+	$name= (string) "Goofy";
+	$date= "2018-1-10 12:30:00.75";
 
-	$user="ist425496";
-	$password="abjq7123";
-	$dbname = $user;	// Do nothing here, your database has the same name as your username.
-	$connection = new PDO("mysql:host=" . $host. ";dbname=" . $dbname, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
+	$host = "db.tecnico.ulisboa.pt";
+	$user = "ist425496";
+	$pass = "abjq7123";
+	$dsn = "mysql:host=$host;dbname=$user";
+	try
+	{
+		$connection = new PDO($dsn, $user, $pass);
+	}
+	catch(PDOException $exception)
+	{
+		echo("<p>Error: ");
+		echo($exception->getMessage());
+		echo("</p>");
+		exit();
+	}
+
 	$sql="SELECT * FROM assistant";
 	$result=$connection->query($sql);
+	if ($result == FALSE)
+	{
+		$info = $connection->errorInfo();
+		echo("<p>Error: {$info[2]}</p>");
+		exit();
+	}
 	$assistants=$result->fetchAll();
 
-	echo ("<h3> BLOOD TESTS RESULTS </h3>");
-	echo ("<br>");
+	$sql="SELECT name FROM indicator";
+	$result=$connection->query($sql);
+	if ($result == FALSE)
+	{
+		$info = $connection->errorInfo();
+		echo("<p>Error: {$info[2]}</p>");
+		exit();
+	}
+	$indicators=$result->fetchAll();
+
+	echo ("<h3> BLOOD TESTS RESULTS </h3><br>");
 	echo ("<form action=\"act.php\" method=\"post\">");
-	echo ("<input type=\"hidden\" id=\"vatowner\" name=\"vatowner\" value=\"$VAT_owner\">");
+	echo ("<input type=\"hidden\" id=\"vatowner\" name=\"vatowner\" value=\"$vatowner\">");
 	echo ("<input type=\"hidden\" id=\"name\" name=\"name\" value=\"$name\">");
 	echo ("<input type=\"hidden\" id=\"date\" name=\"date\" value=\"$date\">");
 	echo ("<fieldset><legend> Results of the Blood Tests </legend>");
 	echo ("<label for=\"vatassistant\"> VAT of the assistant:</label>");
 	echo ("<select id=\"vatassistant\" name=\"vatassistant\">");
-	echo("<option value=\"escolha\">Escolha</option>");
+	echo("<option value=\"escolha\">Choose</option>");
 	foreach($assistants as $row){
 		$vat=$row["VAT"];
 		echo("<option value=\"$vat\">$vat</option>");
 	}
 	echo ("</select><br><br>");
-	echo ("<label for=\"whitebloodcells\"> White Blood Cells Count: </label>");
-	echo ("<input type=\"number\" min=\"1\" id=\"whitebloodcells\" name=\"whitebloodcells\"><br><br>");
-	//echo ("<label for=\"neutrophils\"> Number of Neutrophils:</label>");
-	//echo ("<input type=\"number\" min=\"1\" id=\"neutrophils\" name=\"neutrophils\"><br><br>");
-	//echo ("<label for=\"lymphocytes\"> Number of Lymphocytes:</label>");
-	//echo ("<input type=\"number\" min=\"1\" id=\"lymphocytes\" name=\"lymphocytes\"><br><br>");
-	//echo ("<label for=\"monocytes\"> Number of Monocytes:</label>");
-	//echo ("<input type=\"number\" min=\"1\" id=\"monocytes\" name=\"monocytes\"><br><br>");
-	echo ("<label for=\"redbloodcells\"> Red Blood Cells Count:</label>");
-	echo ("<input type=\"number\" min=\"1\" id=\"redbloodcells\" name=\"redbloodcells\"><br><br>");
+	foreach($indicators as $row){
+		$indicator = $row["name"];
+		echo("<p>$indicator: <input type='number' min='0' name='indicator[$indicator]'/></p>");
+	}
 	echo ("<input type=\"submit\" value=\"Submit\">");
 	echo ("</fieldset>");
-
 	echo ("</form>");
 
-    $connection = null;
-?>
+	$connection = null;
+	?>
 </body>
 </html>
