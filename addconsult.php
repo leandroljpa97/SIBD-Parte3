@@ -52,11 +52,6 @@
   }
   else
   {
-    echo("<p>Consult inserted successfully</p>");
-    echo(" <form action='check.php' method='post'>
-    <h3>Come back to homepage</h3>
-    <p><input type='submit' value='Homepage'/></p>
-    </form>"); // desnecessário
     if(!empty($diagnosis)){
       $sql = $connection->prepare("INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);"); //ver se é possível preparar por partes, acho que não
         foreach ($diagnosis as $code) {

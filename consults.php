@@ -30,30 +30,24 @@
 
   $sql = $connection->prepare("SELECT date_timestamp FROM consult
     WHERE name = :name AND VAT_owner = :VAT_owner;");
-  $sql->execute([':name' => $name,
-                  ':VAT_owner'=>$VAT_owner]);
-
-  $result=$sql->fetchAll();
-
-  if ($result == FALSE)
-  {
+  if(!$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner])){
     $info = $connection->errorInfo();
     echo("<p>Error: {$info[2]}</p>");
     exit();
   }
 
+  $result=$sql->fetchAll();
+
   echo("<table border=\"0\" cellspacing=\"5\">\n");
   foreach($result as $row)
   {
+    $date = $row['date_timestamp'];
     echo("<tr>\n");
     echo("<td>{$row['date_timestamp']}</td>\n");
-    echo("<td><a href=\"consultdetails.php?name=");
-    echo($name);
-    echo("&VAT_owner=");
-    echo($VAT_owner);
-    echo("&date_timestamp=");
-    echo($row['date_timestamp']);
+    echo("<td><a href=\"consultdetails.php?name=$name&VAT_owner=$VAT_owner&date_timestamp=$date");
     echo("\">View consult</a></td>\n");
+    echo("<td><a href=\"test.php?name=$name&VAT_owner=$VAT_owner&date_timestamp=$date");
+    echo("\">Add blood test</a></td>\n");
     echo("</tr>\n");
   }
   echo("</table>\n");
@@ -109,11 +103,12 @@
       }
 
       $connection = null;
-      ?></p>
-      <p><input type='submit' value='Submit'/></p>
-    </form>
-    <form action='check.php' method='post'>
-    <h3>Go back to homepage</h3>
-    <p><input type='submit' value='Homepage'/></p>
-  </body>
-  </html>
+      ?>
+    </p>
+    <p><input type='submit' value='Submit'/></p>
+  </form>
+  <form action='check.php' method='post'>
+  <h3>Go back to homepage</h3>
+  <p><input type='submit' value='Homepage'/></p>
+</body>
+</html>
