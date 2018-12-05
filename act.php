@@ -123,7 +123,7 @@
 		} else {
 			$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp, ':num'=>$number]);
 
-			echo(". Review your results:");
+			echo(". Review your results:</p>");
 			$results = $sql->fetchAll();
 			echo("<table border=\"1\" cellpadding=\"4\">");
 			echo("<tr><td>Indicator</td><td>Value</td></tr>");
