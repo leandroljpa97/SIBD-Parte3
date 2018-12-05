@@ -16,6 +16,7 @@
     echo("</p>");
     exit();
   }
+
   $species_name = $_REQUEST['species_name'];
   $colour = $_REQUEST['colour'];
   $gender= $_REQUEST['gender'];
@@ -23,29 +24,29 @@
   $age=$_REQUEST['age'];
   $name = $_REQUEST['animal_name'];
   $VAT_client=$_REQUEST['VAT_client'];
-  $sqls = $connection->prepare("INSERT into animal values(:animal_name,:VAT_owner,:species_name,:colour,:gender,:birth_year,:age)");
-  $sqls->execute([':animal_name' => $name,
-  ':species_name'=>$species_name,
-  ':VAT_owner'=>$VAT_client,
-  ':colour'=>$colour,
-  ':gender'=>$gender,
-  ':birth_year'=>$birth_year,
-  ':age'=>$age]);
-  $result_f=$sqls->fetchAll();
-  if ($result_f == 0) {
-    $info = $sqls->errorInfo();
-    echo("<p>Error: The insertion was no success</p>");
+
+  $sql = $connection->prepare("INSERT into animal values(:animal_name,:VAT_owner,:species_name,:colour,:gender,:birth_year,:age)");
+  $sql->execute([':animal_name' => $name,
+                 ':species_name'=>$species_name,
+                 ':VAT_owner'=>$VAT_client,
+                 ':colour'=>$colour,
+                 ':gender'=>$gender,
+                 ':birth_year'=>$birth_year,
+                 ':age'=>$age]);
+  $result=$sql->fetchAll();
+  if ($result == 0) {
+    $info = $sql->errorInfo();
+    echo("<p>Error: {$info[2]}</p>");
     exit();
   }
   else
   {
     //header("Location: animals.php");
-        echo("<p>Animal inserted with success</p>");
+    echo("<p>Animal inserted with success</p>");
     echo(" <form action='check.php' method='post'>
-  <h3>Go back to homepage</h3>
-  <p><input type='submit' value='Homepage'/></p>
-  </form>");
-
+    <h3>Go back to homepage</h3>
+    <p><input type='submit' value='Homepage'/></p>
+    </form>");
   }
   ?>
 </body>
