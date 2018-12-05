@@ -32,7 +32,6 @@
   }
 
   $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner]);
-
   $result=$sql->fetchAll();
 
   echo("<table border=\"0\" cellspacing=\"5\">\n");
