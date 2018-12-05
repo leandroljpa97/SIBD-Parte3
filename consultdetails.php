@@ -17,65 +17,64 @@
     echo("</p>");
     exit();
   }
+
   $name = $_REQUEST['name'];
   $VAT_owner = $_REQUEST['VAT_owner'];
   $date_timestamp = $_REQUEST['date_timestamp'];
 
-  $sql = $connection->prepare("SELECT * FROM animal WHERE name = :name
-    AND VAT = :VAT_owner;");
-  if(!$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner])){
-    $info = $connection->errorInfo();
-    echo("<p>Error: {$info[2]}</p>");
-    exit();
+  $sql = $connection->prepare("SELECT * FROM animal WHERE name = :name AND VAT = :VAT_owner;");
+  if($sql == FALSE){
+      $info = $connection->errorInfo();
+      echo("<p>Error: {$info[2]}</p>");
+      exit();
   }
-  $result=$sql->fetchAll();
+  $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner]);
+  $row=$sql->fetch();
+  ?>
 
-  echo("<table border=\"0\" cellspacing=\"5\">\n");
-  foreach($result as $row)
-  {
-    echo("<tr><td>Name: {$row['name']}</td></tr>\n");
-    echo("<tr><td>Owner's VAT: {$row['VAT']}</td></tr>\n");
-    echo("<tr><td>Species: {$row['species_name']}</td></tr>\n");
-    echo("<tr><td>Gender: {$row['gender']}</td></tr>\n");
-    echo("<tr><td>Colour: {$row['colour']}</td></tr>\n");
-    echo("<tr><td>Age: {$row['age']}</td></tr>\n");
-    echo("<tr><td>Age: {$row['birth_year']}</td></tr>\n");
-  }
+  <table border="0" cellspacing="5">
+  <tr><td>Name: <?=$row['name']?></td></tr>
+  <tr><td>Owner's VAT: <?=$row['VAT']?></td></tr>
+  <tr><td>Species: <?=$row['species_name']?></td></tr>
+  <tr><td>Gender: <?=$row['gender']?></td></tr>
+  <tr><td>Colour: <?=$row['colour']?></td></tr>
+  <tr><td>Age: <?=$row['age']?></td></tr>
+  <tr><td>Age: <?=$row['birth_year']?></td></tr>
 
+  <?php
   $sql = $connection->prepare("SELECT s, o, a, p, VAT_client, VAT_vet, weight
     FROM consult WHERE name = :name AND VAT_owner = :VAT_owner
     AND date_timestamp = :date_timestamp;");
-  if(!$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp]))
-  {
-    $info = $connection->errorInfo();
-    echo("<p>Error: {$info[2]}</p>");
-    exit();
+  if($sql == FALSE){
+      $info = $connection->errorInfo();
+      echo("<p>Error: {$info[2]}</p>");
+      exit();
   }
-  $result=$sql->fetchAll();
+  $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp]);
+  $row=$sql->fetch();
+  ?>
 
-  foreach($result as $row)
-  {
-    echo("<tr><td>Vet's VAT: {$row['VAT_vet']}</td></tr>\n");
-    echo("<tr><td>Client's VAT: {$row['VAT_client']}</td></tr>\n");
-    echo("<tr><td>Weight: {$row['weight']}</td></tr>\n");
-    echo("</table>\n");
-    echo("<h4>SOAP notes</h4>\n");
-    echo("<table border=\"0\" cellspacing=\"5\">\n");
-    echo("<tr><td>Subjective: {$row['s']}</td></tr>\n");
-    echo("<tr><td>Objective: {$row['o']}</td></tr>\n");
-    echo("<tr><td>Aassessment: {$row['a']}</td></tr>\n");
-    echo("<tr><td>Plan: {$row['p']}</td></tr>\n");
-  }
-  echo("</table>\n");
+  <tr><td>Vet's VAT: <?=$row['VAT_vet']?></td></tr>
+  <tr><td>Client's VAT: <?=$row['VAT_client']?></td></tr>
+  <tr><td>Weight: <?=$row['weight']?></td></tr>
+  </table>
+  <h4>SOAP notes</h4>
+  <table border="0" cellspacing="5">
+  <tr><td>Subjective: <?=$row['s']?></td></tr>
+  <tr><td>Objective: <?=$row['o']?></td></tr>
+  <tr><td>Aassessment: <?=$row['a']?></td></tr>
+  <tr><td>Plan: <?=$row['p']?></td></tr>
+  </table>
 
+  <?php
   $sql = $connection->prepare("SELECT code FROM consult_diagnosis WHERE name = :name
     AND VAT_owner = :VAT_owner AND date_timestamp = :date_timestamp;");
-  if(!$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp])){
-    $info = $connection->errorInfo();
-    echo("<p>Error: {$info[2]}</p>");
-    exit();
+  if($sql == FALSE){
+      $info = $connection->errorInfo();
+      echo("<p>Error: {$info[2]}</p>");
+      exit();
   }
-
+  $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp]);
   $result=$sql->fetchAll();
 
   if ($result != FALSE)
@@ -92,12 +91,12 @@
   $sql = $connection->prepare("SELECT code, name_med, lab, dosage, regime
     FROM prescription WHERE name = :name
     AND VAT_owner = :VAT_owner AND date_timestamp = :date_timestamp;");
-  if(!$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp])){
-    $info = $connection->errorInfo();
-    echo("<p>Error: {$info[2]}</p>");
-    exit();
+  if($sql == FALSE){
+      $info = $connection->errorInfo();
+      echo("<p>Error: {$info[2]}</p>");
+      exit();
   }
-
+  $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp]);
   $result=$sql->fetchAll();
 
   if ($result != FALSE)

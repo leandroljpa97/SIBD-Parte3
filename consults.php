@@ -96,7 +96,7 @@
         echo("<p>Error: {$info[2]}</p>");
         exit();
       }
-      
+
       foreach($result as $row)
       {
         $code = $row['code'];
