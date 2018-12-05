@@ -1,11 +1,6 @@
 <html>
 <body>
 	<?php
-	//VARIAVEIS DE ESTADO
-	$vatowner= $_REQUEST['VAT_owner'];
-	$name= $_REQUEST['name'];
-	$date= $_REQUEST['date_timestamp'];
-
 	$host = "db.tecnico.ulisboa.pt";
 	$user = "ist425496";
 	$pass = "abjq7123";
@@ -22,7 +17,11 @@
 		exit();
 	}
 
-	$sql="SELECT * FROM assistant";
+	$VAT_owner= $_REQUEST['VAT_owner'];
+	$name= $_REQUEST['name'];
+	$date_timestamp= $_REQUEST['date_timestamp'];
+
+	$sql="SELECT VAT FROM assistant";
 	$result=$connection->query($sql);
 	if ($result == FALSE)
 	{
@@ -42,31 +41,32 @@
 	}
 	$indicators=$result->fetchAll();
 
-	echo ("<h3> BLOOD TESTS RESULTS </h3><br>");
-	echo ("<form action=\"act.php\" method=\"post\">");
-	echo ("<input type=\"hidden\" id=\"vatowner\" name=\"vatowner\" value=\"$vatowner\">");
-	echo ("<input type=\"hidden\" id=\"name\" name=\"name\" value=\"$name\">");
-	echo ("<input type=\"hidden\" id=\"date\" name=\"date\" value=\"$date\">");
-	echo ("<fieldset style='max-width:400px'><legend> Results of the Blood Tests </legend>");
-	echo ("<label for=\"vatassistant\"> VAT of the assistant:</label>");
-	echo ("<select id=\"vatassistant\" name=\"vatassistant\">");
-	echo("<option value=\"choose\">Choose</option>");
+	$connection = null;
+	?>
+	<h3> Blood Test Results </h3><br>
+	<form action="act.php" method="post">
+	<input type="hidden" id="vatowner" name="vatowner" value='<?=$VAT_owner?>'>
+	<input type="hidden" id="name" name="name" value='<?=$name?>'>
+	<input type="hidden" id="date" name="date" value='<?=$date_timestamp?>'>
+	<fieldset style='max-width:400px'><legend> Results of the Blood Tests </legend>
+	<label for="vatassistant"> VAT of the assistant:</label>
+	<select id="vatassistant" name="vatassistant">
+	<option value="choose">Choose</option>
+	<?php
 	foreach($assistants as $row){
 		$vat=$row["VAT"];
 		echo("<option value=\"$vat\">$vat</option>");
 	}
-	echo ("</select><br><br>");
+	echo("</select><br><br>");
 	foreach($indicators as $row){
 		$indicator = $row["name"];
 		$units = $row["units"];
 		echo("<p>$indicator: <input type='number' min='0' style='width:60px;' name='indicator[$indicator]'/> $units</p>");
 	}
-	echo ("<input type=\"submit\" value=\"Submit\">");
-	echo ("</fieldset>");
-	echo ("</form>");
-
-	$connection = null;
 	?>
+	<input type="submit" value="Submit">
+	</fieldset>
+	</form>
 	<form action='check.php' method='post'>
 	<h3>Go back to homepage</h3>
 	<p><input type='submit' value='Homepage'/></p>
