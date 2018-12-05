@@ -39,10 +39,9 @@
   {
     $sqlw = $connection->prepare("SELECT distinct animal.name as an_name, animal.VAT, person.name as name_owner,species_name, colour,gender,birth_year,age FROM animal inner join consult on animal.name=consult.name and animal.VAT=consult.VAT_owner inner join person on animal.VAT=person.VAT  WHERE VAT_client= :VAT_client and animal.name=:animal_name and person.name like CONCAT('%',:owner_name,'%') ");
 
-    $sqlw->execute([':animal_name' => $name,
+    $test = $sqlw->execute([':animal_name' => $name,
     ':owner_name' => $owner_name,':VAT_client' => $VAT_client ]);
-    $result_w=$sqlw->fetchAll();
-    if ($result_w == 0) {
+    if ($test == 0) {
       $info = $sqlw->errorInfo();
       echo("<p>Error: {$info[2]}</p>");
       exit();
@@ -55,10 +54,12 @@
       <p>The intersection of the 3 parameters is empty!</p>
       <form action='insertanimal.php' method='post'>
         <h3>Input the Animal information</h3>
+        <input type='hidden' name='name' value='<?=$name?>' />
+        <input type='hidden' name='VAT_client' value='<?=$VAT_client?>' />
         <p>Colour: <input type='text' name='colour'/></p>
         <p>Gender: <input type='text' name='gender'/></p>
-        <p>Birth year: <input type='date' name='birth_year'/></p>
-        <p>Age: <input type='text' name='age'/></p>
+        <p>Birth year: <input type='date' name='birth_year' max='<?=date('Y-m-d')?>' required/></p>
+        <p>Age: <input type='text' name='age'/></p> <!-- acho que se tirava e calculava fora -->
         <p> Species name: <select name="species_name">
 
           <?php
@@ -121,7 +122,7 @@
           echo("</td><td>");
           echo($row['VAT']);
           echo("</td><td>");
-          echo($row['an_name']);
+          echo($row['name']);
           echo("</td><td>");
           echo($row['species_name']);
           echo("</td><td>");
@@ -134,7 +135,7 @@
           echo($row['age']);
           echo("</td></td>");
           echo("<td><a href=\"consults.php?name=");
-          echo($row['an_name']);
+          echo($row['name']);
           echo("&VAT_owner=");
           echo($row['VAT']);
           echo("\">View animal</a></td></tr>\n");

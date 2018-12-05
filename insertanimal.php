@@ -16,25 +16,24 @@
     echo("</p>");
     exit();
   }
-
+  $name = $_REQUEST['name'];
+  $VAT_client=$_REQUEST['VAT_client'];
   $species_name = $_REQUEST['species_name'];
   $colour = $_REQUEST['colour'];
   $gender= $_REQUEST['gender'];
   $birth_year = $_REQUEST['birth_year'];
   $age=$_REQUEST['age'];
-  $name = $_REQUEST['animal_name'];
-  $VAT_client=$_REQUEST['VAT_client'];
 
   $sql = $connection->prepare("INSERT into animal values(:animal_name,:VAT_owner,:species_name,:colour,:gender,:birth_year,:age)");
-  $sql->execute([':animal_name' => $name,
+  $test = $sql->execute([':animal_name' => $name,
                  ':species_name'=>$species_name,
                  ':VAT_owner'=>$VAT_client,
                  ':colour'=>$colour,
                  ':gender'=>$gender,
                  ':birth_year'=>$birth_year,
                  ':age'=>$age]);
-  $result=$sql->fetchAll();
-  if ($result == 0) {
+  if ($test == FALSE) {
+    //are you trying to insert an existing animal? ;)
     $info = $sql->errorInfo();
     echo("<p>Error: {$info[2]}</p>");
     exit();
