@@ -25,11 +25,13 @@
 
   $sql = $connection->prepare("SELECT date_timestamp FROM consult
     WHERE name = :name AND VAT_owner = :VAT_owner;");
-  if(!$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner])){
-    $info = $connection->errorInfo();
-    echo("<p>Error: {$info[2]}</p>");
-    exit();
+  if($sql == FALSE){
+      $info = $connection->errorInfo();
+      echo("<p>Error: {$info[2]}</p>");
+      exit();
   }
+
+  $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner]);
 
   $result=$sql->fetchAll();
 
@@ -94,6 +96,7 @@
         echo("<p>Error: {$info[2]}</p>");
         exit();
       }
+      
       foreach($result as $row)
       {
         $code = $row['code'];
