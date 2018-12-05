@@ -4,20 +4,27 @@ delimiter $$
 create trigger update_age after insert on consult
 for each row
 begin
+	declare max_date date;
 
-		declare max_date date;
-
-	select max(date_timestamp) into max_date 
-	from consult 
+	select LEAST(NOW(), max(date_timestamp)) into max_date
+	from consult
 	where name=new.name and VAT_owner=new.VAT_owner;
 
-	update animal set age = timestampdiff(YEAR, birth_year,max_date), animal.name=animal.name, animal.VAT=animal.VAT
-		where animal.name=new.name and animal.VAT=new.VAT_owner ;
+	update animal set age = timestampdiff(YEAR, birth_year, max_date), animal.name=animal.name, animal.VAT=animal.VAT
+	where animal.name=new.name and animal.VAT=new.VAT_owner;
 
 end$$
 delimiter ;
 
 /* 2 */
+drop procedure if exists check_vet;
+delimiter $$
+create procedure check_vet()
+begin
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already an assistant';
+end $$
+delimiter ;
+
 drop trigger if exists check_vet_insert;
 delimiter $$
 create trigger check_vet_insert before insert on veterinary
@@ -25,7 +32,7 @@ for each row
 begin
 
 	if (new.VAT in (select VAT from assistant)) then
-	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already an assistant';
+	call check_vet();
 	END IF;
 
 end$$
@@ -38,10 +45,18 @@ for each row
 begin
 
 	if new.VAT in (select VAT from assistant) then
-	signal sqlstate '45000' set message_text = 'This person is already an assistant';
+	call check_vet();
 	end if;
 
 end$$
+delimiter ;
+
+drop procedure if exists check_assistant;
+delimiter $$
+create procedure check_assistant()
+begin
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already a veterinary';
+end $$
 delimiter ;
 
 drop trigger if exists check_assistant_insert;
@@ -51,7 +66,7 @@ for each row
 begin
 
 	if new.VAT in (select VAT from veterinary) then
-		signal sqlstate '45000' set message_text = 'This person is already a veterinary';
+	call check_assistant();
 	end if;
 
 end$$
@@ -64,13 +79,21 @@ for each row
 begin
 
 	if new.VAT in (select VAT from veterinary) then
-		signal sqlstate '45000' set message_text = 'This person is already a veterinary';
+	call check_assistant();
 	end if;
 
 end$$
 delimiter ;
 
 /* 3 */
+drop procedure if exists check_phone;
+delimiter $$
+create procedure check_phone()
+begin
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Phone number already exists';
+end $$
+delimiter ;
+
 drop trigger if exists check_phone_insert;
 delimiter $$
 create trigger check_phone_insert before insert on phone_number
@@ -78,7 +101,7 @@ for each row
 begin
 
 	if new.phone in (select phone from phone_number) then
-		signal sqlstate '45000' set message_text = 'Phone number already exists';
+	  call check_phone();
 	end if;
 
 end$$
@@ -90,8 +113,8 @@ create trigger check_phone_update before update on phone_number
 for each row
 begin
 
-	if new.phone in (select phone from phone_number) then
-		signal sqlstate '45000' set message_text = 'Phone number already exists';
+	if new.phone in (select phone from phone_number where VAT != old.VAT) then
+	  call check_phone();
 	end if;
 
 end$$
@@ -105,15 +128,13 @@ delimiter $$
 create function total_nr_consults(a_name varchar(255), a_vat varchar(255), a_year integer)
 returns integer
 begin
-
 	declare total integer;
 
 	select count(*) into total
-	from animal inner join consult on animal.name=consult.name and animal.VAT= consult.VAT_owner
+	from animal inner join consult on animal.name = consult.name and animal.VAT = consult.VAT_owner
 	where year(date_timestamp)=a_year and animal.name = a_name and animal.VAT = a_vat;
 
 	return total;
-
 end $$
 delimiter ;
 
@@ -125,9 +146,9 @@ delimiter $$
 create procedure change_reference()
 begin
 
-update indicator left outer join produced_indicator on produced_indicator.indicator_name=indicator.name
+update indicator left outer join produced_indicator on produced_indicator.indicator_name = indicator.name
 	set reference_value = reference_value*0.1,
-	units='centigrams',
+	units = 'centigrams',
 	value = value*0.1,
 	VAT_owner = VAT_owner,
 	date_timestamp = date_timestamp,

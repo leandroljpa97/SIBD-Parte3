@@ -51,7 +51,7 @@
 	<fieldset style='max-width:400px'><legend> Results of the Blood Tests </legend>
 	<label for="vatassistant"> VAT of the assistant:</label>
 	<select id="vatassistant" name="vatassistant">
-	<option value="choose">Choose</option>
+	<option value="choose">---</option>
 	<?php
 	foreach($assistants as $row){
 		$vat=$row["VAT"];
