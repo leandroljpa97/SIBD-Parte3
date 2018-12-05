@@ -1,6 +1,7 @@
 <html>
 <body>
   <form action="animals.php" method="post">
+  	<h1>Welcome to Veterinary Hospital </h1>
     <h3>Check client and animal</h3>
     <p>VAT client: <input type="text" name="VAT_client" required/></p>
     <p>Animal name: <input type="text" name="animal_name" required /></p>
