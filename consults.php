@@ -75,7 +75,7 @@
     <input type='hidden' name='date_timestamp' value='<?=$date_timestamp?>' />
     <input type='hidden' name='VAT_owner' value='<?=$VAT_owner?>' />
     <input type='hidden' name='VAT_client' value='<?=$VAT_client?>' />
-    <p>Weight: <input type='number' min="1" name='weight' style="width:60px;" required /> kg</p>
+    <p>Weight: <input type='number' min="0.01" step="0.01" name='weight' style="width:60px;" required /> kg</p>
     <p>Subjective:</p>
     <p><textarea type='text' style="width:250px;height:100px;" name='s'></textarea></p>
     <p>Objective:</p>
