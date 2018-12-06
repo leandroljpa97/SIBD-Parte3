@@ -38,6 +38,8 @@
   }
   else
   {
+
+    echo("<p>You chose VAT Client= "$VAT_client", Animal Name="$name", Owner Name="$owner_name" </p>");
     $sqlw = $connection->prepare("SELECT distinct animal.name as an_name,
       animal.VAT, person.name as name_owner, species_name, colour, gender, birth_year, age
       FROM animal inner join consult on animal.name=consult.name
@@ -69,6 +71,7 @@
           <h3>Input the Animal information</h3>
           <input type='hidden' name='name' value='<?=$name?>' />
           <input type='hidden' name='VAT_client' value='<?=$VAT_client?>' />
+          <p>VAT owner = <?= $VAT_client?> />
           <p>Colour: <input type='text' name='colour' required/></p>
           <p>Gender: <input type='text' name='gender' required/></p>
           <p>Birth year: <input type='date' name='birth_year' max='<?=date('Y-m-d')?>' required/></p>
