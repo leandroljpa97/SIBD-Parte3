@@ -85,7 +85,7 @@
     <p><textarea type='text' style="width:250px;height:100px;" name='a'></textarea></p>
     <p>Plan:</p>
     <p><textarea type='text' style="width:250px;height:100px;" name='p'></textarea></p>
-    <p>Diagnosis:<br/>
+    <p>Diagnosis:<br>
       <?php
       $sql = "SELECT * FROM diagnosis_code";
       $result = $connection->query($sql);
@@ -99,8 +99,8 @@
       foreach($result as $row)
       {
         $code = $row['code'];
-        $name = $row['name'];
-        echo("<input type='checkbox' name='diagnosis[]' value='$code'/>$name<br/>");
+        $dname = $row['name'];
+        echo("<input type='checkbox' name='diagnosis[]' value='$code'/>$dname<br/>");
       }
 
       $connection = null;

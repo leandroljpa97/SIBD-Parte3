@@ -20,10 +20,7 @@
 	$VAT_owner = $_REQUEST['vatowner'];
 	$name = $_REQUEST['name'];
 	$date_timestamp = $_REQUEST['date'];
-	$VAT_assistant = $_REQUEST['vatassistant'];
-	if ($VAT_assistant=="choose"){
-		$VAT_assistant=null;
-	}
+	$assistants = $_REQUEST['assistants'];
 	$indicators=$_REQUEST['indicator'];
 	$description=$_REQUEST['description'];
 
@@ -93,9 +90,10 @@
 			echo("No data was given so nothing was inserted in the database.");
 			$connection->rollback;
 			$ok = -1;
+			break;
 		}
 
-		if ($VAT_assistant != null){
+		foreach ($assistants as $VAT_assistant){
 			$sql = $connection->prepare("INSERT INTO performed
 				VALUES(:name, :VAT_owner, :date_timestamp, :num, :VAT_assistant);");
 			if($sql == FALSE){
@@ -105,9 +103,9 @@
 			$test = $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp, ':num'=>$number,':VAT_assistant'=>$VAT_assistant]);
 			if($test == FALSE)
 				break;
-			}
-			$connection->commit();
-			$ok = 1;
+		}
+		$connection->commit();
+		$ok = 1;
 	}
 
 	if($ok == 0){

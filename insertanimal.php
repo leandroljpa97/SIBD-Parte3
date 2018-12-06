@@ -36,11 +36,11 @@
   }
 
   $test = $sql->execute([':animal_name' => $name,
-                 ':species_name'=>$species_name,
-                 ':VAT_owner'=>$VAT_client,
-                 ':colour'=>$colour,
-                 ':gender'=>$gender,
-                 ':birth_year'=>$birth_year]);
+                         ':species_name'=>$species_name,
+                         ':VAT_owner'=>$VAT_client,
+                         ':colour'=>$colour,
+                         ':gender'=>$gender,
+                         ':birth_year'=>$birth_year]);
   if ($test == FALSE) {
     echo("<p>Are you trying to insert an existing animal?</p>");
     $info = $sql->errorInfo();
@@ -48,7 +48,7 @@
   }
   else
   {
-    echo("<p>Animal inserted with success</p>");
+    header("Location: consults.php?name=$name&VAT_owner=$VAT_client&VAT_client=$VAT_client");
   }
   ?>
   <form action='check.php' method='post'>

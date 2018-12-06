@@ -17,14 +17,6 @@ end$$
 delimiter ;
 
 /* 2 */
-drop procedure if exists check_vet;
-delimiter $$
-create procedure check_vet()
-begin
-	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already an assistant';
-end $$
-delimiter ;
-
 drop trigger if exists check_vet_insert;
 delimiter $$
 create trigger check_vet_insert before insert on veterinary
@@ -32,7 +24,7 @@ for each row
 begin
 
 	if (new.VAT in (select VAT from assistant)) then
-	call check_vet();
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already an assistant';
 	END IF;
 
 end$$
@@ -45,18 +37,10 @@ for each row
 begin
 
 	if new.VAT in (select VAT from assistant) then
-	call check_vet();
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already an assistant';
 	end if;
 
 end$$
-delimiter ;
-
-drop procedure if exists check_assistant;
-delimiter $$
-create procedure check_assistant()
-begin
-	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already a veterinary';
-end $$
 delimiter ;
 
 drop trigger if exists check_assistant_insert;
@@ -66,7 +50,7 @@ for each row
 begin
 
 	if new.VAT in (select VAT from veterinary) then
-	call check_assistant();
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already a veterinary';
 	end if;
 
 end$$
@@ -79,7 +63,7 @@ for each row
 begin
 
 	if new.VAT in (select VAT from veterinary) then
-	call check_assistant();
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This person is already a veterinary';
 	end if;
 
 end$$
@@ -101,7 +85,7 @@ for each row
 begin
 
 	if new.phone in (select phone from phone_number) then
-	  call check_phone();
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Phone number already exists';
 	end if;
 
 end$$
@@ -114,7 +98,7 @@ for each row
 begin
 
 	if new.phone in (select phone from phone_number where VAT != old.VAT) then
-	  call check_phone();
+	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Phone number already exists';
 	end if;
 
 end$$
