@@ -68,7 +68,7 @@
         ?>
         <p>The intersection of the 3 parameters is empty!</p>
         <form action='insertanimal.php' method='post'>
-          <h3>Input the Animal information</h3>
+          <fieldset style='max-width:400px'><legend> Input the Animal information </legend>
           <input type='hidden' name='name' value='<?=$name?>' />
           <input type='hidden' name='VAT_client' value='<?=$VAT_client?>' />
           <p>VAT owner = <?= $VAT_client?> />
@@ -96,6 +96,7 @@
             ?>
           </select> </p>
           <p><input type='submit' value='Submit'/></p>
+        </fieldset>
         </form>
 
         <?php
@@ -151,9 +152,11 @@
           echo($row['age']);
           echo("</td></td>");
           echo("<td><a href=\"consults.php?name=");
-          echo($row['name']);
+          echo($row['an_name']);
           echo("&VAT_owner=");
           echo($row['VAT']);
+          echo("&VAT_client=");
+          echo($VAT_client);
           echo("\">View animal</a></td></tr>\n");
         }
         echo("</table>");

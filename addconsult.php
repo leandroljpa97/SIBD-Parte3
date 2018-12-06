@@ -11,7 +11,7 @@
   }
   catch(PDOException $exception)
   {
-    echo("<p>Error: ");
+    echo("<p>Error0: ");
     echo($exception->getMessage());
     echo("</p>");
     exit();
@@ -28,11 +28,11 @@
   $a=$_REQUEST['a'];
   $p=$_REQUEST['p'];
   $diagnosis= $_REQUEST['diagnosis'];
-
+  echo("name: $name date: $date_timestamp, owner: $VAT_owner, vet: $VAT_vet, client: $VAT_client");
   $sql = $connection->prepare("INSERT into consult values(:name,:VAT_owner,:date_timestamp,:s,:o,:a,:p,:VAT_client,:VAT_vet,:weight);");
   if($sql == FALSE){
     $info = $connection->errorInfo();
-    echo("<p>Error: {$info[2]}</p>");
+    echo("<p>Error1: {$info[2]}</p>");
     exit();
   }
 
@@ -49,7 +49,7 @@
 
   if($test == FALSE){
      $info = $connection->errorInfo();
-     echo("<p>Error: {$info[2]}</p>");
+     echo("<p>Error2: {$info[2]}</p>");
      exit();
   }
 
@@ -58,7 +58,7 @@
     $sql = $connection->prepare("INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);");
     if($sql == FALSE){
         $info = $connection->errorInfo();
-        echo("<p>Error: {$info[2]}</p>");
+        echo("<p>Error3: {$info[2]}</p>");
         exit();
     }
 
@@ -69,13 +69,13 @@
                              ':code'=>$code]);
       if($test == FALSE){
         $info = $connection->errorInfo();
-        echo("<p>Error: {$info[2]}</p>");
+        echo("<p>Error4: {$info[2]}</p>");
         exit();
       }
     }
   }
 
-  header("Location: consults.php");
+  header("Location: consults.php?name=$name&VAT_owner=$VAT_owner&VAT_client=$VAT_client");
   $connection = null;
   ?>
 </body>

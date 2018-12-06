@@ -48,9 +48,9 @@
   }
   echo("</table>\n");
   ?>
-  <h3>Add another consult</h3>
+  <fieldset style='max-width:300px'><legend> Add another consult </legend>
   <p>Name: <?=$name?></p>
-  <p>Owner's VAT: <?=$VAT_owner?></p>
+  <p>Owner VAT: <?=$VAT_owner?></p>
   <p>Date and time: <?=$date_timestamp?></p>
   <form action='addconsult.php' method='post'>
     <p>VAT veterinary doctor:
@@ -107,6 +107,7 @@
       ?>
     </p>
     <p><input type='submit' value='Submit'/></p>
+  </fieldset>
   </form>
   <form action='check.php' method='post'>
   <h3>Go back to homepage</h3>
