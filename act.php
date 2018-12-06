@@ -25,6 +25,7 @@
 		$VAT_assistant=null;
 	}
 	$indicators=$_REQUEST['indicator'];
+	$description=$_REQUEST['description'];
 
 	$connection->beginTransaction();
 
@@ -50,12 +51,12 @@
 			$number = $result['max'] + 1;
 		}
 
-		$sql= $connection->prepare("INSERT INTO proced VALUES(:name, :VAT_owner, :date_timestamp, :num, 'blood test');");
+		$sql= $connection->prepare("INSERT INTO proced VALUES(:name, :VAT_owner, :date_timestamp, :num, :description);");
 		if($sql == FALSE){
 			break;
 		}
 
-		$test = $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp, ':num'=>$number ]);
+		$test = $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp, ':num'=>$number, ':description'=>$description]);
 		if($test == FALSE){
 			break;
 		}
@@ -105,7 +106,6 @@
 			if($test == FALSE)
 				break;
 			}
-			//$connection->rollback();
 			$connection->commit();
 			$ok = 1;
 	}
