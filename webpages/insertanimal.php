@@ -2,8 +2,8 @@
 <body>
   <?php
   $host = "db.tecnico.ulisboa.pt";
-  $user = "ist425496";
-  $pass = "abjq7123";
+  $user = "istxxxxxx";
+  $pass = "xxxxxxxx";
   $dsn = "mysql:host=$host;dbname=$user";
   try
   {
@@ -28,14 +28,14 @@
   $birth_year = $_REQUEST['birth_year'];
   $age=0;
 
-  $sql = $connection->prepare("INSERT into animal values(:animal_name,:VAT_owner,:species_name,:colour,:gender,:birth_year,$age)");
+  $sql = $connection->prepare("INSERT into animal values(:name, :VAT_owner, :species_name, :colour, :gender, :birth_year, $age)");
   if ($sql == FALSE) {
     $info = $sql->errorInfo();
     echo("<p>Error: {$info[2]}</p>");
     exit();
   }
 
-  $test = $sql->execute([':animal_name' => $name,
+  $test = $sql->execute([':name' => $name,
                          ':species_name'=>$species_name,
                          ':VAT_owner'=>$VAT_client,
                          ':colour'=>$colour,

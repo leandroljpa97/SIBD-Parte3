@@ -3,8 +3,8 @@
   <h3>Consults</h3>
   <?php
   $host = "db.tecnico.ulisboa.pt";
-  $user = "ist425496";
-  $pass = "abjq7123";
+  $user = "istxxxxxx";
+  $pass = "xxxxxxxx";
   $dsn = "mysql:host=$host;dbname=$user";
   try
   {
@@ -40,9 +40,9 @@
     $date = $row['date_timestamp'];
     echo("<tr>\n");
     echo("<td>{$row['date_timestamp']}</td>\n");
-    echo("<td><a href=\"consultdetails.php?name=$name&VAT_owner=$VAT_owner&date_timestamp=$date");
+    echo("<td><a href=\"consultdetails.php?name=$name &VAT_owner=$VAT_owner&date_timestamp=$date");
     echo("\">View consult</a></td>\n");
-    echo("<td><a href=\"test.php?name=$name&VAT_owner=$VAT_owner&date_timestamp=$date");
+    echo("<td><a href=\"test.php?name=$name &VAT_owner=$VAT_owner&date_timestamp=$date");
     echo("\">Add blood test</a></td>\n");
     echo("</tr>\n");
   }
@@ -85,7 +85,24 @@
     <p><textarea type='text' style="width:250px;height:100px;" name='a'></textarea></p>
     <p>Plan:</p>
     <p><textarea type='text' style="width:250px;height:100px;" name='p'></textarea></p>
-    <p>Diagnosis:<br>
+    <p>Assistants:</p>
+      <?php
+      $sql = "SELECT * FROM assistant";
+      $result = $connection->query($sql);
+      if ($result == FALSE)
+      {
+        $info = $connection->errorInfo();
+        echo("<p>Error: {$info[2]}</p>");
+        exit();
+      }
+
+      foreach($result as $row)
+      {
+        $vat = $row['VAT'];
+        echo("<input type='checkbox' name='assistants[]' value='$vat'/>$vat<br/>");
+      }
+      ?>
+    <p>Diagnosis:</p>
       <?php
       $sql = "SELECT * FROM diagnosis_code";
       $result = $connection->query($sql);
@@ -105,7 +122,6 @@
 
       $connection = null;
       ?>
-    </p>
     <p><input type='submit' value='Submit'/></p>
   </fieldset>
   </form>

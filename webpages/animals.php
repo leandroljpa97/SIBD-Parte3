@@ -3,8 +3,8 @@
   <h3>Animals</h3>
   <?php
   $host = "db.tecnico.ulisboa.pt";
-  $user = "ist425496";
-  $pass = "abjq7123";
+  $user = "istxxxxxx";
+  $pass = "xxxxxxxx";
   $dsn = "mysql:host=$host;dbname=$user";
   try
   {
@@ -39,7 +39,7 @@
   else
   {
 
-    echo("<p>You chose VAT Client= "$VAT_client", Animal Name="$name", Owner Name="$owner_name" </p>");
+    echo("<p>You chose  VAT Client: $VAT_client, Animal Name: $name, Owner Name: $owner_name </p>");
     $sqlw = $connection->prepare("SELECT distinct animal.name as an_name,
       animal.VAT, person.name as name_owner, species_name, colour, gender, birth_year, age
       FROM animal inner join consult on animal.name=consult.name
@@ -71,10 +71,10 @@
           <fieldset style='max-width:400px'><legend> Input the Animal information </legend>
           <input type='hidden' name='name' value='<?=$name?>' />
           <input type='hidden' name='VAT_client' value='<?=$VAT_client?>' />
-          <p>VAT owner = <?= $VAT_client?> />
+          <p>VAT owner = <?= $VAT_client?></p>
           <p>Colour: <input type='text' name='colour' required/></p>
           <p>Gender: <input type='text' name='gender' required/></p>
-          <p>Birth year: <input type='date' name='birth_year' max='<?=date('Y-m-d')?>' required/></p>
+          <p>Birthday: <input type='date' name='birth_year' max='<?=date('Y-m-d')?>' required/></p>
           <p>Species name: <select name="species_name">
           <option value="---">---</option>
             <?php
@@ -131,7 +131,7 @@
         }
 
         echo("<table border=\"1\" cellpadding=\"4\">");
-        echo("<tr><td>Owner name</td><td>VAT Owner</td><td>animal name</td><td>Species name</td><td>Colour</td><td>Gender</td><td>Birthday</td><td>Age</td></tr>");
+        echo("<tr><td>Owner name</td><td>VAT Owner</td><td>Animal name</td><td>Species</td><td>Colour</td><td>Gender </td><td>Birthday</td><td>Age</td></tr>");
         foreach($result_w as $row)
         {
           echo("<tr><td>");

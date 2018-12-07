@@ -2,8 +2,8 @@
 <body>
   <?php
   $host = "db.tecnico.ulisboa.pt";
-  $user = "ist425496";
-  $pass = "abjq7123";
+  $user = "istxxxxxx";
+  $pass = "xxxxxxxx";
   $dsn = "mysql:host=$host;dbname=$user";
   try
   {
@@ -11,7 +11,7 @@
   }
   catch(PDOException $exception)
   {
-    echo("<p>Error0: ");
+    echo("<p>Error: ");
     echo($exception->getMessage());
     echo("</p>");
     exit();
@@ -28,11 +28,12 @@
   $a=$_REQUEST['a'];
   $p=$_REQUEST['p'];
   $diagnosis= $_REQUEST['diagnosis'];
-  echo("name: $name date: $date_timestamp, owner: $VAT_owner, vet: $VAT_vet, client: $VAT_client");
-  $sql = $connection->prepare("INSERT into consult values(:name,:VAT_owner,:date_timestamp,:s,:o,:a,:p,:VAT_client,:VAT_vet,:weight);");
+  $assistants= $_REQUEST['assistants'];
+
+  $sql = $connection->prepare("INSERT into consult values(:name, :VAT_owner, :date_timestamp, :s, :o, :a, :p, :VAT_client, :VAT_vet, :weight);");
   if($sql == FALSE){
     $info = $connection->errorInfo();
-    echo("<p>Error1: {$info[2]}</p>");
+    echo("<p>Error: {$info[2]}</p>");
     exit();
   }
 
@@ -49,8 +50,30 @@
 
   if($test == FALSE){
      $info = $connection->errorInfo();
-     echo("<p>Error2: {$info[2]}</p>");
+     echo("<p>Error: {$info[2]}</p>");
      exit();
+  }
+
+  if(!empty($assistants)){
+
+    $sql = $connection->prepare("INSERT into participation values(:name, :VAT_owner, :date_timestamp, :VAT_assistant);");
+    if($sql == FALSE){
+        $info = $connection->errorInfo();
+        echo("<p>Error: {$info[2]}</p>");
+        exit();
+    }
+
+    foreach ($assistants as $vat) {
+      $test = $sql->execute([':name' => $name,
+                             ':VAT_owner'=>$VAT_owner,
+                             ':date_timestamp'=>$date_timestamp,
+                             ':VAT_assistant'=>$vat]);
+      if($test == FALSE){
+        $info = $connection->errorInfo();
+        echo("<p>Error: {$info[2]}</p>");
+        exit();
+      }
+    }
   }
 
   if(!empty($diagnosis)){
@@ -58,7 +81,7 @@
     $sql = $connection->prepare("INSERT into consult_diagnosis values(:code,:name,:VAT_owner,:date_timestamp);");
     if($sql == FALSE){
         $info = $connection->errorInfo();
-        echo("<p>Error3: {$info[2]}</p>");
+        echo("<p>Error: {$info[2]}</p>");
         exit();
     }
 
@@ -69,13 +92,15 @@
                              ':code'=>$code]);
       if($test == FALSE){
         $info = $connection->errorInfo();
-        echo("<p>Error4: {$info[2]}</p>");
+        echo("<p>Error: {$info[2]}</p>");
         exit();
       }
     }
   }
 
-  header("Location: consults.php?name=$name&VAT_owner=$VAT_owner&VAT_client=$VAT_client");
+  if($sql == TRUE && $test == TRUE){
+    header("Location: consults.php?name=$name&VAT_owner=$VAT_owner&VAT_client=$VAT_client");
+  }
   $connection = null;
   ?>
 </body>

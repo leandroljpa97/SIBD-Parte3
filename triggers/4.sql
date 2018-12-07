@@ -7,8 +7,8 @@ begin
 	declare total integer;
 
 	select count(*) into total
-	from animal inner join consult on animal.name = consult.name and animal.VAT = consult.VAT_owner
-	where year(date_timestamp)=a_year and animal.name = a_name and animal.VAT = a_vat;
+	from consult
+	where year(date_timestamp) = a_year and name = a_name and VAT_owner = a_vat;
 
 	return total;
 end $$

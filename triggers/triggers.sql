@@ -70,14 +70,6 @@ end$$
 delimiter ;
 
 /* 3 */
-drop procedure if exists check_phone;
-delimiter $$
-create procedure check_phone()
-begin
-	SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Phone number already exists';
-end $$
-delimiter ;
-
 drop trigger if exists check_phone_insert;
 delimiter $$
 create trigger check_phone_insert before insert on phone_number
@@ -104,8 +96,7 @@ begin
 end$$
 delimiter ;
 
-
-/* 4 testado */
+/* 4 */
 drop function if exists total_nr_consults;
 
 delimiter $$
@@ -115,15 +106,15 @@ begin
 	declare total integer;
 
 	select count(*) into total
-	from animal inner join consult on animal.name = consult.name and animal.VAT = consult.VAT_owner
-	where year(date_timestamp)=a_year and animal.name = a_name and animal.VAT = a_vat;
+	from consult
+	where year(date_timestamp) = a_year and name = a_name and VAT_owner = a_vat;
 
 	return total;
 end $$
 delimiter ;
 
 
-/* 5 testado */
+/* 5 */
 drop procedure if exists change_reference;
 
 delimiter $$

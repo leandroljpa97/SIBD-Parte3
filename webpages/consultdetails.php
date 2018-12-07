@@ -3,8 +3,8 @@
   <h3>Consult: <?=$_REQUEST['date_timestamp']?></h3>
   <?php
   $host = "db.tecnico.ulisboa.pt";
-  $user = "ist425496";
-  $pass = "abjq7123";
+  $user = "istxxxxxx";
+  $pass = "xxxxxxxx";
   $dsn = "mysql:host=$host;dbname=$user";
   try
   {
@@ -39,7 +39,7 @@
   <tr><td>Gender: <?=$row['gender']?></td></tr>
   <tr><td>Colour: <?=$row['colour']?></td></tr>
   <tr><td>Age: <?=$row['age']?></td></tr>
-  <tr><td>Age: <?=$row['birth_year']?></td></tr>
+  <tr><td>Birthday: <?=$row['birth_year']?></td></tr>
 
   <?php
   $sql = $connection->prepare("SELECT s, o, a, p, VAT_client, VAT_vet, weight
@@ -67,7 +67,31 @@
   </table>
 
   <?php
-  $sql = $connection->prepare("SELECT code FROM consult_diagnosis WHERE name = :name
+  $sql = $connection->prepare("SELECT VAT_assistant FROM participation
+		WHERE name = :name AND VAT_owner = :VAT_owner AND date_timestamp = :date_timestamp;");
+	if($sql == FALSE){
+		$info = $connection->errorInfo();
+		echo("<p>Error: {$info[2]}</p>");
+		exit();
+	}
+
+	$sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp]);
+
+	$result = $sql->fetchAll();
+
+  if ($result != FALSE)
+  {
+    echo("<h4>Assistants:</h4>\n");
+    foreach($result as $row)
+    {
+      echo("<table border=\"0\" cellspacing=\"5\">\n");
+      echo("<tr><td>{$row['VAT_assistant']}</td></tr>\n");
+    }
+    echo("</table>\n");
+  }
+
+  $sql = $connection->prepare("SELECT code, d.name FROM consult_diagnosis
+    inner join diagnosis_code as d using(code) WHERE consult_diagnosis.name = :name
     AND VAT_owner = :VAT_owner AND date_timestamp = :date_timestamp;");
   if($sql == FALSE){
       $info = $connection->errorInfo();
@@ -75,6 +99,7 @@
       exit();
   }
   $sql->execute([':name' => $name, ':VAT_owner'=>$VAT_owner, ':date_timestamp'=>$date_timestamp]);
+
   $result=$sql->fetchAll();
 
   if ($result != FALSE)
@@ -83,7 +108,7 @@
     foreach($result as $row)
     {
       echo("<table border=\"0\" cellspacing=\"5\">\n");
-      echo("<tr><td>{$row['code']}</td></tr>\n");
+      echo("<tr><td>{$row['code']} &ndash; {$row['name']}</td></tr>\n");
     }
     echo("</table>\n");
   }

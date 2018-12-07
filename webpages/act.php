@@ -2,8 +2,8 @@
 <body>
 	<?php
 	$host = "db.tecnico.ulisboa.pt";
-	$user = "ist425496";
-	$pass = "abjq7123";
+	$user = "istxxxxxx";
+  $pass = "xxxxxxxx";
 	$dsn = "mysql:host=$host;dbname=$user";
 	try
 	{
@@ -40,7 +40,7 @@
 			break;
 		}
 
-		$result=$sql->fetch();
+		$result = $sql->fetch();
 		if($result['max'] == NULL){
 			$number = 1;
 		}
