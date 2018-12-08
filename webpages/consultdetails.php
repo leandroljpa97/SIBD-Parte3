@@ -62,7 +62,7 @@
   <table border="0" cellspacing="5">
   <tr><td>Subjective: <?=$row['s']?></td></tr>
   <tr><td>Objective: <?=$row['o']?></td></tr>
-  <tr><td>Aassessment: <?=$row['a']?></td></tr>
+  <tr><td>Assessment: <?=$row['a']?></td></tr>
   <tr><td>Plan: <?=$row['p']?></td></tr>
   </table>
 
