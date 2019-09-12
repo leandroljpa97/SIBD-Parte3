@@ -1,5 +1,4 @@
 # SIBD-Parte3
 
-Projeto em SQL, PHP e HTML para um veterinário, com toda a gestão de consultas, receitas médicas para todos os animais que frequentam o veterinário. Existe um site para ver todas estas estatísticas, para marcar consultas, ver todas as consultas, receitas médicas, registar novo animal, etc..
-
+Project in SQL, PHP and HTML for a veterinarian, with all consultation management, prescriptions for all animals attending the veterinarian. There is a website to view all these statistics, to make appointments, see all appointments, prescriptions, register new pet, etc ..
 Grade: 19.5/20
